@@ -1,0 +1,22 @@
+services:
+  postgresql:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env.docker
+
+  building_management:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+    ports:
+      - 3000:3000
